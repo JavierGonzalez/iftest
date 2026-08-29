@@ -1,0 +1,125 @@
+// iftest conformance suite (Ruby)
+// A conformant runner must pass every line of this file.
+// SPEC §5: only false and nil are falsy; 0, '', [], {} are truthy.
+
+# 01 — Truthiness
+
+# Truthy values
+true
+1
+-1
+1.5
+'a'
+'0'
+'0.0'
+[1]
+[0]
+[]
+{}
+0
+0.0
+''
+(1..3)
+:sym
+10 ** 20
+Float::NAN
+1.0 / 0  // Infinity is truthy
+lambda { |n| n }
+Object.new
+
+# Falsy values (inverted with #pass_fail)
+false #pass_fail
+nil #pass_fail
+
+# 02 — Operators
+// Format: EXPECTED <op> CODE — the leftmost operator wins.
+
+# Identity (runner-side === is strict: type and value must match)
+1 === 1
+1 === 1.0 #pass_fail
+1 !== 1.0
+'a' === 'a'
+nil === nil
+nil === 0 #pass_fail
+true === 1 #pass_fail
+
+# Equality (native Ruby: numbers unify, nothing else coerces)
+1 == 1.0
+'1' == 1 #pass_fail
+1 != 1.0 #pass_fail
+1 <> 2
+1 <> 1 #pass_fail
+
+# Greater than
+2 > 1
+1 > 1 #pass_fail
+2 >= 2
+1 >= 2 #pass_fail
+
+# Less than
+1 < 2
+2 < 2 #pass_fail
+2 <= 2
+3 <= 2 #pass_fail
+
+# Strings
+'a' < 'b'
+'b' > 'a'
+'abc' === 'abc'
+'abc' !== 'abd'
+
+# Leftmost operator wins
+true === (1 === 1)
+false === (1 === 2)
+true === (2 > 1)
+
+# Spaceship is plain code (native Ruby <=>)
+0 === (1 <=> 1)
+1 === (2 <=> 1)
+-1 === (1 <=> 2)
+
+# 03 — Shared state
+// All lines share one binding, top to bottom.
+// Assignments are plain Ruby expressions: they return the assigned value.
+
+# Assignments are tests (the assigned value is the result)
+counter = 1
+counter = counter + 1
+2 === counter
+
+# Arrays grow across lines
+items = ['a']
+items << 'b'
+2 === items.length
+'b' === items[1]
+
+# Strings accumulate
+text = 'if'
+text += 'test'
+'iftest' === text
+
+# Lambdas persist
+double = lambda { |n| n * 2 }
+8 === double.call(4)
+
+# Hashes persist
+user = { nick: 'max' }
+'max' === user[:nick]
+
+# Expected side can use state too
+limit = 10
+limit > 5
+
+# 04 — Directives
+
+# pass_fail inverts the verdict
+false #pass_fail
+1 === 2 #pass_fail
+true === 1 #pass_fail
+
+# limit_ms: fast code passes, over-limit code fails (invertible)
+'fast' === 'fast' #limit_ms=100
+true #limit_ms=0 #pass_fail
+
+# Unknown directives warn but do not fail
+true #future_directive

@@ -1,0 +1,125 @@
+// iftest conformance suite (JS)
+// A conformant runner must pass every line of this file.
+
+# 01 — Truthiness
+
+# Truthy values
+true
+1
+-1
+1.5
+'a'
+'0'
+[1]
+[0]
+[]
+{}
+Infinity
+1n
+
+# Falsy values (inverted with #pass_fail)
+false #pass_fail
+null #pass_fail
+undefined #pass_fail
+0 #pass_fail
+0.0 #pass_fail
+'' #pass_fail
+NaN #pass_fail
+0n #pass_fail
+
+# 02 — Operators
+// Format: EXPECTED <op> CODE — the leftmost operator wins.
+
+# Identity
+1 === 1
+1 === '1' #pass_fail
+1 !== '1'
+'a' === 'a'
+null === null
+undefined === undefined
+null === undefined #pass_fail
+
+# Equality (loose, JS idiom)
+1 == 1.0
+'1' == 1
+null == undefined
+1 != 1.0 #pass_fail
+1 <> 2
+1 <> 1 #pass_fail
+
+# Greater than
+2 > 1
+1 > 1 #pass_fail
+2 >= 2
+1 >= 2 #pass_fail
+
+# Less than
+1 < 2
+2 < 2 #pass_fail
+2 <= 2
+3 <= 2 #pass_fail
+
+# Strings
+'a' < 'b'
+'b' > 'a'
+'abc' === 'abc'
+'abc' !== 'abd'
+
+# Leftmost operator wins
+true === (1 === 1)
+false === (1 === 2)
+true === (2 > 1)
+
+# Chained comparison is plain code (JS evaluates left to right)
+true === (3 > 2 > 1) #pass_fail
+
+# Sign of a subtraction is the JS spaceship
+0 === Math.sign(1 - 1)
+1 === Math.sign(2 - 1)
+-1 === Math.sign(1 - 2)
+
+# 03 — Shared state
+// All lines share one scope, top to bottom.
+// State uses plain assignments: they become globals of the shared scope.
+
+# Assignments are tests (the assigned value is the result)
+counter = 1
+counter = counter + 1
+2 === counter
+
+# Arrays grow across lines
+items = ['a']
+items.push('b')
+2 === items.length
+'b' === items[1]
+
+# Strings accumulate
+text = 'if'
+text += 'test'
+'iftest' === text
+
+# Arrow functions persist
+double = (n) => n * 2
+8 === double(4)
+
+# Objects persist
+user = { nick: 'max' }
+'max' === user.nick
+
+# Expected side can use state too
+limit = 10
+limit > 5
+
+# 04 — Directives
+
+# pass_fail inverts the verdict
+false #pass_fail
+1 === 2 #pass_fail
+true === 1 #pass_fail
+
+# limit_ms: fast code passes, over-limit code fails (invertible)
+'fast' === 'fast' #limit_ms=100
+true #limit_ms=0 #pass_fail
+
+# Unknown directives warn but do not fail
+true #future_directive

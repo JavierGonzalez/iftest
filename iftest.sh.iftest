@@ -1,0 +1,118 @@
+// iftest conformance suite (Bash)
+// A conformant runner must pass every line of this file.
+
+# 01 — Truthiness
+// No operator: the verdict is the exit status. 0 is truthy, 1..125 falsy.
+
+# Truthy commands (exit status 0)
+true
+:
+[ 1 -eq 1 ]
+[ -n 'x' ]
+[ -z '' ]
+test 1 = 1
+echo -n ''
+echo 'output does not matter, status does'
+( exit 0 )
+! false
+
+# Falsy commands (exit status > 0), inverted
+false #pass_fail
+[ 1 -eq 2 ] #pass_fail
+[ -n '' ] #pass_fail
+[ -z 'x' ] #pass_fail
+test 1 = 2 #pass_fail
+( exit 1 ) #pass_fail
+! true #pass_fail
+
+# Pipelines: the last command decides
+echo foobar | grep -q foo
+echo foobar | grep -q baz #pass_fail
+
+# Empty stdout is still truthy in Bash (the status rules)
+printf ''
+
+# 02 — Operators
+// EXPECTED is literal text (a glob pattern with ==), compared to stdout.
+
+# Strict string equality
+hello === echo hello
+hello === echo bye #pass_fail
+hello !== echo bye
+hello !== echo hello #pass_fail
+a b === echo a b
+'a b' === echo a b #pass_fail
+
+# == follows Bash semantics: EXPECTED is a glob pattern, like [[ ]]
+*.txt == echo report.txt
+*.txt == echo report.log #pass_fail
+fo? == echo foo
+fo? == echo foobar #pass_fail
+h* == echo hello
+h* === echo hello #pass_fail
+
+# != and <> negate the pattern
+foo != echo bar
+foo != echo foo #pass_fail
+foo <> echo bar
+foo <> echo foo #pass_fail
+
+# Order: numeric when both sides are numbers (floats and negatives allowed)
+2 > echo 1
+1 > echo 1 #pass_fail
+2 >= echo 2
+1 >= echo 2 #pass_fail
+1 < echo 2
+2 < echo 2 #pass_fail
+2 <= echo 2
+3 <= echo 2 #pass_fail
+1.5 > echo 1.4
+-1 < echo 0
+
+# Order: bytewise for strings (LC_ALL=C)
+b > echo a
+a > echo b #pass_fail
+a < echo b
+b < echo a #pass_fail
+
+# The leftmost operator wins: the rest belongs to CODE
+a * == echo a === b
+
+# 03 — Shared state
+// All lines share one shell scope, top to bottom.
+
+# Assignments are tests (status 0, empty stdout)
+name=iftest
+iftest === echo $name
+iftest === echo "$name"
+
+# Counter arithmetic
+counter=1
+counter=$((counter + 1))
+2 === echo $counter
+((counter++))
+3 === echo $counter
+
+# Strings accumulate
+text=if
+text+=test
+iftest === echo $text
+
+# Arrays grow across lines
+items=(a)
+items+=(b)
+2 === echo ${#items[@]}
+b === echo ${items[1]}
+
+# Functions persist
+double() { echo $(( $1 * 2 )); }
+8 === double 4
+
+# 04 — Directives
+
+# pass_fail inverts the verdict
+false #pass_fail
+hello === echo bye #pass_fail
+
+# Unknown directives warn but do not fail
+true #future_directive

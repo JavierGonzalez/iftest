@@ -1,0 +1,27 @@
+/* iftest web UI — shared styles for run output (used by index.php panel and exec.php standalone) */
+
+body.iftest_page { margin:24px; min-height:calc(100vh - 48px); display:flex; flex-direction:column; background:#fafafa }
+
+.iftest_run { flex:1 0 auto; min-height:100%; display:flex; flex-direction:column; font:14px/1.45 ui-monospace,Menlo,Consolas,monospace }
+.iftest_run table { border-collapse:collapse; width:100%; margin-bottom:16px; background:#fff }
+.iftest_run td { padding:2px 8px; vertical-align:top; border-bottom:1px solid #eee }
+.iftest_run .n { color:#999; text-align:right; width:1% }
+.iftest_run .v { font-weight:700; white-space:nowrap; width:1% }
+.iftest_run .ms { color:#999; text-align:right; white-space:nowrap; width:1% }
+.iftest_run .pass .v { color:#1a7f37 }
+.iftest_run .fail .v { color:#c00 }
+.iftest_run .skip .v, .iftest_run .todo .v { color:#b58900 }
+.iftest_run tr.title td { font-weight:700; color:#0550ae; padding-top:16px; border-bottom:none }
+.iftest_run .c { overflow-wrap:anywhere }
+.iftest_run .r { color:#666; max-width:420px; overflow-wrap:anywhere }
+.iftest_run .sum { font-size:22px; margin:24px 0 8px }
+.iftest_sumbar { position:sticky; bottom:0; z-index:1; margin-top:auto; padding:8px 0 10px; background:#fafafa; border-top:1px solid #e3e3e3; box-shadow:0 -10px 14px -10px rgba(0,0,0,.18) }
+.iftest_sumbar .sum { margin:6px 0 2px }
+.iftest_sumbar .meta { margin:4px 0 0 }
+.iftest_run .ok { color:#1a7f37 }
+.iftest_run .bad { color:#c00 }
+.iftest_run .meta { color:#999 }
+.iftest_run a { color:#06c; text-decoration:none }
+.iftest_code pre { background:#fff; border:1px solid #eee; padding:10px 14px; margin:6px 0 0; overflow-x:auto }
+.iftest_code .ln { color:#ccc; user-select:none }
+.iftest_code .why { color:#b58900 }

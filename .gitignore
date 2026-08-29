@@ -1,0 +1,5 @@
+*secrets*.php
+.maxsim/*
+.DS_Store
+/tmp/
+*.log

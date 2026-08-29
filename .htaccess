@@ -1,0 +1,18 @@
+DirectoryIndex index.php index.html
+
+AddType text/plain .iftest .md
+AddCharset utf-8 .iftest .md
+
+<Files "iftest.php">
+ Order Allow,Deny
+ Deny from all
+</Files>
+
+<FilesMatch "(Dockerfile|\.(log|sh|ini|env|yml|yaml|backup|sql)$)">
+ Order Allow,Deny
+ Deny from all
+</FilesMatch>
+
+RedirectMatch 403 /\..*
+RedirectMatch 403 .*password.*
+RedirectMatch 403 .*secrets.*

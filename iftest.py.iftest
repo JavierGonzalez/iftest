@@ -1,0 +1,127 @@
+// iftest conformance suite (Python)
+// A conformant runner must pass every line of this file.
+
+# 01 — Truthiness
+
+# Truthy values
+True
+1
+-1
+1.5
+'a'
+'0'
+'0.0'
+[1]
+[0]
+(1,)
+{'a': 1}
+10 ** 20
+float('inf')
+float('nan') // truthy in Python, unlike JS NaN
+lambda: 1
+
+# Falsy values (inverted with #pass_fail)
+False #pass_fail
+None #pass_fail
+0 #pass_fail
+0.0 #pass_fail
+'' #pass_fail
+[] #pass_fail
+{} #pass_fail
+() #pass_fail
+set() #pass_fail
+
+# 02 — Operators
+// Format: EXPECTED <op> CODE — the leftmost operator wins.
+
+# Identity (strict: type and value must match)
+1 === 1
+1 === 1.0 #pass_fail
+1 !== 1.0
+'a' === 'a'
+None === None
+True === 1 #pass_fail
+
+# Equality (native Python: numbers unify, nothing else coerces)
+1 == 1.0
+'1' == 1 #pass_fail
+1 != 1.0 #pass_fail
+1 <> 2
+1 <> 1 #pass_fail
+
+# Greater than
+2 > 1
+1 > 1 #pass_fail
+2 >= 2
+1 >= 2 #pass_fail
+
+# Less than
+1 < 2
+2 < 2 #pass_fail
+2 <= 2
+3 <= 2 #pass_fail
+
+# Strings
+'a' < 'b'
+'b' > 'a'
+'abc' === 'abc'
+'abc' !== 'abd'
+
+# Leftmost operator wins
+True === (1 == 1)
+False === (1 == 2)
+True === (2 > 1)
+
+# Chained comparison is native Python (3 > 2 and 2 > 1)
+True === (3 > 2 > 1)
+
+# (a > b) - (a < b) is the Python spaceship
+0 === ((1 > 1) - (1 < 1))
+1 === ((2 > 1) - (2 < 1))
+-1 === ((1 > 2) - (1 < 2))
+
+# 03 — Shared state
+// All lines share one scope, top to bottom.
+// Assignments are tests too: the assigned value is the result.
+
+# Assignments are tests (the assigned value is the result)
+counter = 1
+counter = counter + 1
+2 === counter
+
+# Lists grow across lines
+items = ['a']
+items += ['b']
+2 === len(items)
+'b' === items[1]
+
+# Strings accumulate
+text = 'if'
+text += 'test'
+'iftest' === text
+
+# Lambdas persist
+double = lambda n: n * 2
+8 === double(4)
+
+# Dicts persist
+user = {'nick': 'max'}
+'max' === user['nick']
+
+# Expected side can use state too
+limit = 10
+limit > 5
+
+# 04 — Directives
+
+# pass_fail inverts the verdict
+False #pass_fail
+1 === 2 #pass_fail
+True === 1 #pass_fail
+
+# limit_ms: fast code passes, over-limit code fails (invertible)
+'fast' === 'fast' #limit_ms=100
+True #limit_ms=0 #pass_fail
+
+# Unknown directives warn but do not fail
+True #future_directive

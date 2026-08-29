@@ -1,0 +1,120 @@
+// iftest conformance suite (Go)
+// A conformant runner must pass every line of this file.
+// SPEC §5: false/nil falsy, numbers != 0, strings != "", slices/maps len > 0, rest truthy.
+
+# 01 — Truthiness
+
+# Truthy values
+true
+1
+-1
+1.5
+'a'
+'0'
+[1]
+[0]
+{'a': 1}
+func() { return 1 }
+
+# Falsy values (inverted with #pass_fail)
+false #pass_fail
+nil #pass_fail
+0 #pass_fail
+0.0 #pass_fail
+'' #pass_fail
+[] #pass_fail
+{} #pass_fail
+
+# 02 — Operators
+// Format: EXPECTED <op> CODE — the leftmost operator wins.
+
+# Identity (strict: int and float are different types)
+1 === 1
+1 === 1.0 #pass_fail
+1 !== 1.0
+'a' === 'a'
+nil === nil
+nil === 0 #pass_fail
+
+# Equality (loose: ints and floats unify, nothing else coerces)
+1 == 1.0
+1 != 1.0 #pass_fail
+1 <> 2
+1 <> 1 #pass_fail
+
+# Greater than
+2 > 1
+1 > 1 #pass_fail
+2 >= 2
+1 >= 2 #pass_fail
+
+# Less than
+1 < 2
+2 < 2 #pass_fail
+2 <= 2
+3 <= 2 #pass_fail
+
+# Strings
+'a' < 'b'
+'b' > 'a'
+'abc' === 'abc'
+'abc' !== 'abd'
+
+# Leftmost operator wins
+true === (1 === 1)
+false === (1 === 2)
+true === (2 > 1)
+
+# Chained comparison is plain code (mismatched types compare false)
+false === (3 > 2 > 1)
+
+# cmp() is the Go spaceship
+0 === cmp(1, 1)
+1 === cmp(2, 1)
+-1 === cmp(1, 2)
+
+# 03 — Shared state
+// All lines share one scope, top to bottom.
+// Assignments are tests too: the assigned value is the result.
+
+# Assignments are tests (the assigned value is the result)
+counter = 1
+counter = counter + 1
+2 === counter
+
+# Slices grow across lines
+items = ['a']
+items = append(items, 'b')
+2 === len(items)
+'b' === items[1]
+
+# Strings accumulate
+text = 'if'
+text += 'test'
+'iftest' === text
+
+# Func literals persist (closures capture the file scope)
+double = func(n) { return n * 2 }
+8 === double(4)
+
+# Maps persist
+user = {'nick': 'max'}
+'max' === user['nick']
+
+# Expected side can use state too
+limit = 10
+limit > 5
+
+# 04 — Directives
+
+# pass_fail inverts the verdict
+false #pass_fail
+1 === 2 #pass_fail
+true === 1 #pass_fail
+
+# limit_ms: fast code passes, over-limit code fails (invertible)
+'fast' === 'fast' #limit_ms=100
+true #limit_ms=0 #pass_fail
+
+# Unknown directives warn but do not fail
+true #future_directive
