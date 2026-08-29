@@ -1,5 +1,8 @@
 DirectoryIndex index.php index.html
 
+RewriteEngine On
+RewriteRule ^og\.png$ /og.php [L]
+
 AddType text/plain .iftest .md
 AddCharset utf-8 .iftest .md
 

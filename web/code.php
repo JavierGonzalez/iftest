@@ -22,16 +22,12 @@ foreach (explode('/', $rel) as $seg)
         break;
     }
 
-$lang = preg_match('/\.(php|js|go|py)\.iftest$/', $rel, $m) ? $m[1] : null;
+$lang = preg_match('/\.(php|js|go|py|sh|rb)\.iftest$/', $rel, $m) ? $m[1] : null;
 
 if ($hidden)
     $note = 'hidden dotfile: excluded from auto-discovery, run it explicitly from the CLI';
-elseif ($lang === 'js')
-    $note = 'owned by the JS runner: not executable by iftest.php';
-elseif ($lang === 'go')
-    $note = 'owned by the Go runner: not executable by iftest.php';
-elseif ($lang === 'py')
-    $note = 'owned by the Python runner: not executable by iftest.php';
+elseif ($lang !== null && $lang !== 'php')
+    $note = 'owned by the '.strtoupper($lang).' runner: not executable by iftest.php';
 else
     $note = null;
 

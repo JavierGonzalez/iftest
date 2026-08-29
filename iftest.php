@@ -9,7 +9,7 @@
  * MIT License — Copyright (c) 2026 Javier González González <javier.gonzalez@maxsim.cloud>
  */
 
-const IFTEST_VERSION = '2.5.0';
+const IFTEST_VERSION = '2.5.1';
 
 const IFTEST_OPERATORS = ['===', '!==', '==', '!=', '<>', '>=', '<=', '>', '<'];
 
@@ -246,6 +246,11 @@ if (preg_match('/\.(php|js|go|py|sh|rb)\.iftest$/', $f->getFilename(), $m) && $m
 
 function iftest_c(string $text, string $ansi, bool $color): string {
     return $color ? "\033[".$ansi."m".$text."\033[0m" : $text;
+}
+
+// Pluralized count:  iftest_n(1, 'test') -> '1 test'
+function iftest_n(int $n, string $word): string {
+    return $n.' '.$word.($n === 1 ? '' : 's');
 }
 
 // Short one-line rendering of any value (human output).
@@ -522,9 +527,9 @@ function iftest_cli(array $argv): never {
             if ($res['tests'] === 0)
                 echo '  '.iftest_c('(no tests)', '33', $color)."\n";
             elseif ($res['ok'])
-                echo '  '.iftest_c('✔ ALL PASS', '32', $color).iftest_c(' — '.$res['tests'].' tests in '.number_format($res['ms'], 3).' ms', '2', $color)."\n";
+                echo '  '.iftest_c('✔ ALL PASS', '32', $color).iftest_c(' — '.iftest_n($res['tests'], 'test').' in '.number_format($res['ms'], 3).' ms', '2', $color)."\n";
             else
-                echo '  '.iftest_c('✘ FAIL '.$res['fail'], '1;31', $color).iftest_c(' — '.$res['tests'].' tests in '.number_format($res['ms'], 3).' ms', '2', $color)."\n";
+                echo '  '.iftest_c('✘ FAIL '.$res['fail'], '1;31', $color).iftest_c(' — '.iftest_n($res['tests'], 'test').' in '.number_format($res['ms'], 3).' ms', '2', $color)."\n";
         } elseif ($format === 'json') {
             echo iftest_ndjson([
                 'type' => 'file_end', 'file' => $file, 'ok' => $res['ok'],
@@ -553,9 +558,9 @@ function iftest_cli(array $argv): never {
             echo "\n";
         $extra = ($tot['skip'] || $tot['todo']) ? ' — '.$tot['skip'].' skipped, '.$tot['todo'].' todo' : '';
         if ($exit === 0)
-            echo iftest_c('✔ ALL PASS', '1;32', $color).' — '.$tot['tests'].' tests, '.$tot['files'].' files, '.number_format($ms_total, 3).' ms'.$extra.' — php'."\n";
+            echo iftest_c('✔ ALL PASS', '1;32', $color).' — '.iftest_n($tot['tests'], 'test').', '.iftest_n($tot['files'], 'file').', '.number_format($ms_total, 3).' ms'.$extra.' — php'."\n";
         else
-            echo iftest_c('✘ FAIL', '1;31', $color).' — '.$tot['fail'].' of '.$tot['tests'].' tests failed, '.$tot['files_fail'].' of '.$tot['files'].' files'.$extra.' — php'."\n";
+            echo iftest_c('✘ FAIL', '1;31', $color).' — '.$tot['fail'].' of '.iftest_n($tot['tests'], 'test').' failed, '.$tot['files_fail'].' of '.iftest_n($tot['files'], 'file').$extra.' — php'."\n";
     } elseif ($format === 'json') {
         echo iftest_ndjson(['type' => 'summary'] + $tot + ['ms' => round($ms_total, 3), 'exit' => $exit])."\n";
     } else {

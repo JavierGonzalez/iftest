@@ -27,7 +27,7 @@ foreach (explode('/', $rel) as $seg)
         break;
     }
 
-if ($hidden || preg_match('/\.(js|go|py)\.iftest$/', $rel)) {
+if ($hidden || preg_match('/\.(js|go|py|sh|rb)\.iftest$/', $rel)) {
     http_response_code(400);
     exit('400 — hidden or owned by another runner: not executable by iftest.php');
 }
@@ -98,9 +98,9 @@ echo '</table><div class="iftest_sumbar">';
 if ($res['error'] !== null) {
     echo '<p class="sum bad">ERROR — '.$esc($res['error']).'</p>';
 } elseif ($res['ok']) {
-    echo '<p class="sum ok">✔ ALL PASS — '.$res['tests'].' tests in '.number_format($res['ms'], 3).' ms</p>';
+    echo '<p class="sum ok">✔ ALL PASS — '.iftest_n($res['tests'], 'test').' in '.number_format($res['ms'], 3).' ms</p>';
 } else {
-    echo '<p class="sum bad">✘ FAIL '.$res['fail'].' — '.$res['tests'].' tests in '.number_format($res['ms'], 3).' ms</p>';
+    echo '<p class="sum bad">✘ FAIL '.$res['fail'].' — '.iftest_n($res['tests'], 'test').' in '.number_format($res['ms'], 3).' ms</p>';
 }
 
 echo '<p class="meta">'.$esc($rel)

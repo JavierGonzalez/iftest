@@ -34,9 +34,9 @@ php iftest.php hello.php.iftest
 ```
 ▸ hello.php.iftest
    1 PASS    0.01 ms 4 === 2 + 2  → 4
-  ✔ ALL PASS — 1 tests in 0.01 ms
+  ✔ ALL PASS — 1 test in 0.01 ms
 
-✔ ALL PASS — 1 tests, 1 files, 0.35 ms
+✔ ALL PASS — 1 test, 1 file, 0.35 ms
 ```
 
 Give it a directory and it runs every `*.iftest` file recursively
@@ -81,7 +81,7 @@ php iftest.php --json iftest.php.iftest
 
 ```json
 {"type":"test","file":"iftest.php.iftest","line":29,"code":"1","expected":"1","operator":"===","pass_fail":false,"verdict":"pass","ms":0.01,"result":1,"error":null,"warnings":[]}
-{"type":"summary","files":1,"files_fail":0,"tests":64,"pass":64,"fail":0,"skip":0,"todo":0,"ms":1.2,"exit":0}
+{"type":"summary","files":1,"files_fail":0,"tests":63,"pass":63,"fail":0,"skip":0,"todo":0,"ms":1.2,"exit":0}
 ```
 
 An AI agent can generate tests (one line each, no framework API to learn),

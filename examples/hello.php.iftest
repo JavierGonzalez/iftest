@@ -1,0 +1,17 @@
+<?php // hello.iftest — run: php iftest.php examples/hello.php.iftest
+
+# Basics
+4 === 2 + 2
+'hello' === 'hello'
+true
+
+# State: assignments are tests, one shared scope per file
+$name = 'iftest'
+'iftest' === $name
+6 === strlen($name)
+
+# Directives
+false #pass_fail
+this_function_does_not_exist() #skip
+'a' === 'b' #todo
+microtime(true) #limit_ms=50

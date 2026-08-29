@@ -15,7 +15,7 @@ sort($files, SORT_STRING);
 $groups = [];
 foreach ($files as $f) {
     $rel    = str_replace(DIRECTORY_SEPARATOR, '/', substr($f, strlen($root) + 1));
-    $lang   = preg_match('/\.(php|js|go|py)\.iftest$/', $rel, $m) ? $m[1] : null;
+    $lang   = preg_match('/\.(php|js|go|py|sh|rb)\.iftest$/', $rel, $m) ? $m[1] : null;
     $hidden = false;
     foreach (explode('/', $rel) as $seg)
         if (str_starts_with($seg, '.')) {
