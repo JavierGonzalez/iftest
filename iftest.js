@@ -9,7 +9,7 @@
  * (no process, require, console, timers). Plain assignments (no let/const)
  * become globals shared by every line of the file.
  *
- * MIT License — Copyright (c) 2026 Javier González González <gonzo@virtualpol.com>
+ * MIT License — Copyright (c) 2026 Javier González González <javier.gonzalez@maxsim.cloud>
  */
 'use strict';
 

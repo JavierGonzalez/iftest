@@ -5,7 +5,7 @@
 # Single-file test runner. Zero dependencies. Bash >= 5.0
 # https://github.com/JavierGonzalez/iftest
 #
-# MIT License — Copyright (c) 2026 Javier González González <gonzo@virtualpol.com>
+# MIT License — Copyright (c) 2026 Javier González González <javier.gonzalez@maxsim.cloud>
 
 IFTEST_VERSION='2.5.1'
 

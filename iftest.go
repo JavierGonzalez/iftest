@@ -11,7 +11,7 @@
  * cmp, sleep_ms and defined. Assignments (name = expr, :=, +=) share one
  * scope per file.
  *
- * MIT License — Copyright (c) 2026 Javier González González <gonzo@virtualpol.com>
+ * MIT License — Copyright (c) 2026 Javier González González <javier.gonzalez@maxsim.cloud>
  */
 package main
 

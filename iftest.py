@@ -10,7 +10,7 @@ leaks between files). Plain assignments (name = expr, name op= expr) are
 tests too: the assigned value is the result. .iftest files ARE code: the
 runner executes them with its own privileges (SPEC §11).
 
-MIT License — Copyright (c) 2026 Javier González González <gonzo@virtualpol.com>
+MIT License — Copyright (c) 2026 Javier González González <javier.gonzalez@maxsim.cloud>
 """
 
 import ast

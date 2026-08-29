@@ -6,7 +6,7 @@
  * Single-file test runner. Zero dependencies. PHP >= 8.1
  * https://github.com/JavierGonzalez/iftest
  *
- * MIT License — Copyright (c) 2026 Javier González González <gonzo@virtualpol.com>
+ * MIT License — Copyright (c) 2026 Javier González González <javier.gonzalez@maxsim.cloud>
  */
 
 const IFTEST_VERSION = '2.5.0';

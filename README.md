@@ -134,4 +134,4 @@ all in the same one-line-per-test format.
 
 ## License
 
-MIT — Copyright (c) 2026 Javier González González <gonzo@virtualpol.com>
+MIT — Copyright (c) 2026 Javier González González <javier.gonzalez@maxsim.cloud>

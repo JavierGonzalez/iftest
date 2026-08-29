@@ -11,7 +11,7 @@
 # per test: it never kills the runner. .iftest files ARE code: the runner
 # executes them with its own privileges (SPEC §11).
 #
-# MIT License — Copyright (c) 2026 Javier González González <gonzo@virtualpol.com>
+# MIT License — Copyright (c) 2026 Javier González González <javier.gonzalez@maxsim.cloud>
 
 require 'base64'
 require 'json'
