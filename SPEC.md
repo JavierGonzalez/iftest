@@ -13,6 +13,17 @@ else
 This document is normative. Runners live in this repository as single files: `iftest.php`, `iftest.js`, `iftest.go`, `iftest.py`, `iftest.sh`, `iftest.rb`.
 
 
+## Changelog
+
+- **v1.0.0** — Initial spec: one line = one test, `EXPECTED <op> CODE`, one shared scope per file. (Known v1 bugs, fixed and documented later: `<=>` mis-parsed as an operator and silent errors.)
+- **v1.1.0** — The format turns normative: operator table, directives (`#pass_fail`, `#limit_ms`, `#skip`, `#todo`) and the NDJSON / TAP output contracts.
+- **v1.2.0** — §1 language routing: during directory discovery each runner owns only its `*.<lang>.iftest` infix (born with iftest.js).
+- **v1.3.0** — §5 Go expression dialect: the embedded Go-flavoured mini-language of iftest.go.
+- **v1.4.0** — §5 Python runner: AST-based assignments, strict type `===`, native Python truthiness.
+- **v1.5.0** — §5 Bash runner: truth = exit status, result = stdout, glob `==`, one subshell per file.
+- **v1.6.0** — §5 Ruby runner: Ruby truthiness, native `===` (case equality) inside CODE, `exit` rescued as `SystemExit`. Six conformant runners.
+
+
 ## 1. Files
 
 - Plain text, UTF-8, LF or CRLF.
